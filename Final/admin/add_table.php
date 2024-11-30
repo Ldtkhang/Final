@@ -1,7 +1,6 @@
 <?php
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     if ($_POST['tableName'] == "") {
         $error .= "<li>Please enter Table Name</li>";
     }
@@ -9,13 +8,11 @@ if (isset($_POST['btnSubmit'])) {
         $error .= "<li>Please select Area ID</li>";
     }
 
-    // If no errors, proceed to add the table
     if ($error == "") {
         $tableName = $_POST["tableName"];
         $areaID = $_POST["areaID"];
         $tableStatus = "Available";
 
-        // Insert the new table into the database directly without checking for duplicate table names
         $sql = "INSERT INTO restaurant_table (TableName, AreaID, TableStatus) VALUES ('$tableName', '$areaID', '$tableStatus')";
         if (mysqli_query($conn, $sql)) {
             echo '<script>alert("Add table successful")</script>';

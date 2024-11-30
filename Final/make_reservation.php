@@ -1,6 +1,5 @@
 <?php
 $error = "";
-// Kiểm tra xem người dùng đã đăng nhập chưa
 if (!isset($_SESSION['usid']) || $_SESSION['usid'] == "") {
     echo '<script>alert("PLEASE LOGIN")</script>';
     echo '<meta http-equiv="refresh" content="0;URL=?page=login.php"/>';
@@ -8,7 +7,6 @@ if (!isset($_SESSION['usid']) || $_SESSION['usid'] == "") {
 }
 
 if (isset($_POST['btnSubmit'])) {
-    // Nếu chưa chọn Area hoặc Table, hiển thị lỗi
     if ($_POST['area'] == "" || $_POST['table'] == "") {
         $error .= "<li>Please select both Area and Table</li>";
     }
@@ -20,30 +18,25 @@ if (isset($_POST['btnSubmit'])) {
 
         $orders_date = date('Y-m-d H:i:s');
 
-        // Kiểm tra người dùng có tồn tại không
         $sql = "SELECT * FROM user WHERE UserID='" . $us_id . "'";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) == 1) {
-            // Thêm đơn hàng vào cơ sở dữ liệu với trạng thái "Pending"
             $sql = "INSERT INTO orders (UserID, OrdersDate, OrdersStatus, AreaID, TableID) 
                     VALUES('$us_id', '$orders_date', 'Pending', '$area_id', '$table_id')";
             mysqli_query($conn, $sql);
 
             $order_id = mysqli_insert_id($conn);
 
-            // Thêm bản ghi vào bảng receipt
             $receipt_date = date('Y-m-d');
             $receipt_quantity = 1;
             $sql = "INSERT INTO receipt (OrderID, ReceiptDate, ReceiptQuantity) 
                     VALUES ('$order_id', '$receipt_date', '$receipt_quantity')";
             mysqli_query($conn, $sql);
 
-            // Cập nhật trạng thái của bàn thành "Unavailable"
             $sql = "UPDATE restaurant_table SET TableStatus = 'Unavailable' WHERE TableID = '$table_id'";
             mysqli_query($conn, $sql);
 
-            // Lưu thông tin area_id và table_id vào session
             $_SESSION['area_id'] = $area_id;
             $_SESSION['table_id'] = $table_id;
 
@@ -53,13 +46,11 @@ if (isset($_POST['btnSubmit'])) {
     }
 }
 
-// Truy vấn để lấy danh sách khu vực
 $area_sql = "SELECT * FROM area";
 $area_result = mysqli_query($conn, $area_sql);
 
 $table_options = "";
 
-// Truy vấn để lấy danh sách bàn dựa trên khu vực đã chọn
 if (isset($_POST['area'])) {
     $selected_area_id = $_POST['area'];
 

@@ -3,7 +3,6 @@ if (isset($_POST['cart_id']) && isset($_POST['quantity'])) {
     $cartID = intval($_POST['cart_id']);
     $quantity = intval($_POST['quantity']);
 
-    // Ensure quantity is at least 1
     if ($quantity < 1) {
         $quantity = 1;
     }

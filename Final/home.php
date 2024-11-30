@@ -2,19 +2,16 @@
     <form action="" method="GET" class="form-inline">
         <input type="hidden" name="page" value="home.php">
         
-        <!-- Input tìm kiếm -->
         <input type="text" name="search" placeholder="Search for products..." 
                value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" 
                class="form-control">
         
-        <!-- Bộ lọc loại món ăn -->
         <select name="filter_type" class="form-control">
             <option value="">All Types</option>
             <option value="Dish" <?php echo (isset($_GET['filter_type']) && $_GET['filter_type'] === 'Dish') ? 'selected' : ''; ?>>Dishes</option>
             <option value="Drink" <?php echo (isset($_GET['filter_type']) && $_GET['filter_type'] === 'Drink') ? 'selected' : ''; ?>>Drinks</option>
         </select>
         
-        <!-- Bộ lọc sắp xếp giá -->
         <select name="sort_price" class="form-control">
             <option value="">Sort by Price</option>
             <option value="asc" <?php echo (isset($_GET['sort_price']) && $_GET['sort_price'] === 'asc') ? 'selected' : ''; ?>>Low to High</option>
@@ -28,26 +25,20 @@
 
 <div class="row">
     <?php
-    // Số lượng sản phẩm mỗi trang
     $items_per_page = 9;
 
-    // Xác định trang hiện tại
     $current_page = isset($_GET['page_num']) ? (int)$_GET['page_num'] : 1;
     $current_page = max($current_page, 1);
 
-    // Tính toán offset
     $offset = ($current_page - 1) * $items_per_page;
 
-    // Lấy từ khóa tìm kiếm, loại món và sắp xếp giá trị nếu có
     $search_query = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
     $filter_type = isset($_GET['filter_type']) ? mysqli_real_escape_string($conn, $_GET['filter_type']) : '';
     $sort_price = isset($_GET['sort_price']) ? mysqli_real_escape_string($conn, $_GET['sort_price']) : '';
 
-    // Câu truy vấn SQL cơ bản
     $total_sql = "SELECT COUNT(*) FROM dishanddrink";
     $sql = "SELECT * FROM dishanddrink";
 
-    // Thêm điều kiện tìm kiếm nếu có từ khóa
     $conditions = [];
     if (!empty($search_query)) {
         $conditions[] = "DishanddrinkName LIKE '%$search_query%'";
@@ -56,21 +47,17 @@
         $conditions[] = "DishanddrinkType = '$filter_type'";
     }
 
-    // Ghép các điều kiện lại trong câu truy vấn
     if (count($conditions) > 0) {
         $total_sql .= " WHERE " . implode(" AND ", $conditions);
         $sql .= " WHERE " . implode(" AND ", $conditions);
     }
 
-    // Thêm điều kiện sắp xếp giá nếu có
     if (!empty($sort_price)) {
         $sql .= " ORDER BY DishanddrinkPrice " . ($sort_price === 'asc' ? 'ASC' : 'DESC');
     }
 
-    // Thêm phân trang
     $sql .= " LIMIT $offset, $items_per_page";
 
-    // Thực thi truy vấn SQL
     $total_result = mysqli_query($conn, $total_sql);
     $total_items = mysqli_fetch_array($total_result)[0];
     $total_pages = ceil($total_items / $items_per_page);
@@ -109,12 +96,11 @@
     <?php
         }
     } else {
-        echo "<p>No products found.</p>"; // Message when no products are found
+        echo "<p>No products found.</p>";
     }
     ?>
 </div>
 
-<!-- Pagination navigation -->
 <div class="pagination">
     <?php if ($total_pages > 1): ?>
         <?php if ($current_page > 1): ?>

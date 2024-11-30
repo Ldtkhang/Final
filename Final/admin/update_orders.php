@@ -6,11 +6,9 @@ require '../vendor/PHPMailer-master/src/SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Kiểm tra kết nối cơ sở dữ liệu ở đây
 
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     if ($_POST['ordersDate'] == "") {
         $error .= "<li>Please enter Order Date</li>";
     }
@@ -19,54 +17,47 @@ if (isset($_POST['btnSubmit'])) {
     }
 
     if ($error == "") {
-        // Update order information in MySQL
-        $id = $_GET['id']; // OrderID không thay đổi
+        $id = $_GET['id'];
         $ordersDate = $_POST['ordersDate'];
         $ordersStatus = $_POST['ordersStatus'];
 
-        // Lấy thông tin đơn hàng
         $sql = "SELECT * FROM orders WHERE OrderID='" . $id . "'";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) == 1) {
-            // Lấy thông tin người dùng từ bảng user
             $order = mysqli_fetch_assoc($result);
             $userID = $order['UserID'];
 
-            // Lấy thông tin email và tên người dùng
             $userSql = "SELECT UserEmail, UserFullName FROM user WHERE UserID='" . $userID . "'";
             $userResult = mysqli_query($conn, $userSql);
             $userRow = mysqli_fetch_assoc($userResult);
             $userEmail = $userRow['UserEmail'];
-            $userFullName = $userRow['UserFullName']; // Lấy UserFullName
+            $userFullName = $userRow['UserFullName'];
 
-            // Update đơn hàng
             $sql = "UPDATE orders SET 
                         OrdersDate = '$ordersDate', 
-                        OrdersStatus = '$ordersStatus'  -- Do not update UserID, AreaID, or TableID
+                        OrdersStatus = '$ordersStatus'
                     WHERE OrderID = '$id'";
             mysqli_query($conn, $sql);
             echo '<script>alert("Update successful")</script>';
             
-            // Gửi email nếu trạng thái là 'Completed'
             if ($ordersStatus == 'Completed') {
                 // Gửi email
-                $mail = new PHPMailer(true); // Đừng quên thêm true để kích hoạt ngoại lệ
+                $mail = new PHPMailer(true);
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'khangldtgcc200376@fpt.edu.vn'; // Địa chỉ email gửi
-                $mail->Password = 'ucth tcqd tqdz nupx'; // Mật khẩu ứng dụng
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Sử dụng PHPMailer::ENCRYPTION_STARTTLS
+                $mail->Username = 'khangldtgcc200376@fpt.edu.vn';
+                $mail->Password = 'ucth tcqd tqdz nupx';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
-                $mail->setFrom('khangldtgcc200376@fpt.edu.vn', 'TK Restaurant'); // Người gửi
+                $mail->setFrom('khangldtgcc200376@fpt.edu.vn', 'TK Restaurant');
                 $mail->addAddress($userEmail);
 
-                $mail->isHTML(true); // Đặt định dạng email là HTML
+                $mail->isHTML(true);
 
-                // Sử dụng UserFullName trong nội dung email
-                $bodyContent .= '<p>Dear ' . htmlspecialchars($userFullName) . ',</p>'; // Thay UserFullName vào đây
+                $bodyContent .= '<p>Dear ' . htmlspecialchars($userFullName) . ',</p>';
                 $bodyContent .= '<p>Thank you for your order with ID <strong>' . $id . '</strong>. We are pleased to inform you that your order has been successfully completed.</p>';
                 $bodyContent .= '<p>Order Date: ' . $ordersDate . '</p>';
                 $bodyContent .= '<p>We appreciate your choice to dine with us and look forward to serving you again!</p>';
@@ -88,25 +79,24 @@ if (isset($_POST['btnSubmit'])) {
         }
     }
 } else {
-    // Pre-fill the form with existing order data
     if (isset($_GET["id"])) {
         $orderID = "";
         $userID = "";
         $ordersDate = "";
         $ordersStatus = "";
-        $areaID = ""; // We will display AreaID but keep it unchanged
-        $tableID = ""; // We will display TableID but keep it unchanged
+        $areaID = "";
+        $tableID = "";
 
         $sql = "SELECT * FROM orders WHERE OrderID=" . $_GET["id"];
         $results = mysqli_query($conn, $sql);
 
         while ($row = mysqli_fetch_array($results)) {
             $orderID = $row["OrderID"];
-            $userID = $row["UserID"]; // Fetch UserID but do not allow editing
+            $userID = $row["UserID"]; 
             $ordersDate = $row["OrdersDate"];
             $ordersStatus = $row["OrdersStatus"];
-            $areaID = $row["AreaID"]; // Fetch AreaID but do not allow editing
-            $tableID = $row["TableID"]; // Fetch TableID but do not allow editing
+            $areaID = $row["AreaID"]; 
+            $tableID = $row["TableID"];
         }
     }
 }
@@ -124,7 +114,7 @@ if (isset($_POST['btnSubmit'])) {
     </div>
     <div class="form-group">
         <label for="">User ID</label>
-        <input type="text" class="form-control" name="userID" value="<?php echo isset($userID) ? $userID : ''; ?>" readonly> <!-- Make User ID read-only -->
+        <input type="text" class="form-control" name="userID" value="<?php echo isset($userID) ? $userID : ''; ?>" readonly>
     </div>
     <div class="form-group">
         <label for="">Order Date</label>
@@ -142,11 +132,11 @@ if (isset($_POST['btnSubmit'])) {
     </div>
     <div class="form-group">
         <label for="">Area ID</label>
-        <input type="text" class="form-control" name="areaID" value="<?php echo isset($areaID) ? $areaID : ''; ?>" readonly> <!-- Make Area ID read-only -->
+        <input type="text" class="form-control" name="areaID" value="<?php echo isset($areaID) ? $areaID : ''; ?>" readonly>
     </div>
     <div class="form-group">
         <label for="">Table ID</label>
-        <input type="text" class="form-control" name="tableID" value="<?php echo isset($tableID) ? $tableID : ''; ?>" readonly> <!-- Make Table ID read-only -->
+        <input type="text" class="form-control" name="tableID" value="<?php echo isset($tableID) ? $tableID : ''; ?>" readonly>
     </div>
     <button type="submit" name="btnSubmit" class="btn btn-primary">Update</button>
 </form>

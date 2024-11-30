@@ -1,7 +1,6 @@
 <?php
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-    // Validate inputs
     if ($_POST['usname'] == "") {
         $error .= "<li>Please enter Username</li>";
     }
@@ -9,52 +8,47 @@ if (isset($_POST['btnSubmit'])) {
         $error .= "<li>Please enter Password</li>";
     }
 
-    // If no errors, process the login
     if ($error == "") {
         $username = $_POST['usname'];
         $password = $_POST['password'];
-        $passwordmd5 = md5($password); // Hash the password
+        $passwordmd5 = md5($password);
 
-        // Check customer account
         $sql = "SELECT * FROM user WHERE UserName='" . mysqli_real_escape_string($conn, $username) . "' AND UserPassword='" . $passwordmd5 . "' AND UserRole='customer'";
         $result = mysqli_query($conn, $sql);
 
-        // Check if login was successful
         if (mysqli_num_rows($result) == 1) {
-            $_SESSION["usname"] = $username; // Store username in session
+            $_SESSION["usname"] = $username;
 
             while ($row = mysqli_fetch_array($result)) {
                 $_SESSION["UserID"] = $row['UserID'];
                 $_SESSION["UserRole"] = $row['UserRole'];
-                $_SESSION["usid"] = $row['UserID']; // Store user ID in session
+                $_SESSION["usid"] = $row['UserID'];
             }
 
             echo '<script>alert("YOU LOGGED IN SUCCESSFULLY")</script>';
             echo '<meta http-equiv="refresh" content="0;URL=?page=home.php"/>';
         } else {
-            // Check for admin account
             $sql = "SELECT * FROM user WHERE UserName='" . mysqli_real_escape_string($conn, $username) . "' AND UserPassword='" . $passwordmd5 . "' AND UserRole='Admin'";
             $result = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) == 1) {
-                $_SESSION["usname"] = $username; // Store username in session
+                $_SESSION["usname"] = $username;
 
                 while ($row = mysqli_fetch_array($result)) {
                     $_SESSION["UserID"] = $row['UserID'];
                     $_SESSION["UserRole"] = $row['UserRole'];
-                    $_SESSION["usid"] = $row['UserID']; // Store user ID in session
+                    $_SESSION["usid"] = $row['UserID'];
                 }
 
                 echo '<script>alert("YOU LOGGED IN SUCCESSFULLY")</script>';
                 header("Location: $urladmin?page=$home");
             } else {
-                $error .= "<li>LOGIN FAILED</li>"; // Invalid credentials
+                $error .= "<li>LOGIN FAILED</li>";
             }
         }
     }
 }
 
-// If register button is clicked, redirect to register page
 if (isset($_POST['btnRegister'])) {
     echo '<meta http-equiv="refresh" content="0;URL=?page=register.php"/>';
 }

@@ -1,7 +1,6 @@
 <?php
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     if ($_POST['serviceID'] == "") {
         $error .= "<li>Please enter Service ID</li>";
     }
@@ -13,7 +12,6 @@ if (isset($_POST['btnSubmit'])) {
     }
 
     if ($error == "") {
-        // Update service information in MySQL
         $id = $_GET['id'];
         $serviceID = $_POST['serviceID'];
         $serviceName = $_POST['serviceName'];
@@ -40,7 +38,6 @@ if (isset($_POST['btnSubmit'])) {
         }
     }
 } else {
-    // Pre-fill the form with existing service data
     if (isset($_GET["id"])) {
         $serviceID = "";
         $serviceName = "";

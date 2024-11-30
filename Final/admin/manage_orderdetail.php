@@ -15,11 +15,9 @@
     </thead>
     <tbody>
         <?php
-        // Query to select all columns from the `orderdetail` table
         $sql = "SELECT * FROM orderdetail";
         $result = mysqli_query($conn, $sql);
 
-        // Loop through each row in the result set and display them in the table
         while ($row = mysqli_fetch_array($result)) {
         ?>
             <tr>
@@ -27,10 +25,9 @@
                 <td><?php echo $row['DishanddrinkID']; ?></td>
                 <td><?php echo $row['ServicesID']; ?></td>
                 <td><?php echo $row['OrderdetailQuantity']; ?></td>
-                <td><?php echo $row['OrderdetailPrice']; ?></td> <!-- Dish/Drink price only -->
-                <td><?php echo $row['OrderdetailServicePrice']; ?></td> <!-- Service price only -->
+                <td><?php echo $row['OrderdetailPrice']; ?></td>
+                <td><?php echo $row['OrderdetailServicePrice']; ?></td>
                 <td>
-                    <!-- Actions for editing and deleting, identified by OrderID and DishanddrinkID -->
                     <a href="?page=update_orderdetail.php&id=<?php echo $row['OrderID']; ?>&dishanddrinkID=<?php echo $row['DishanddrinkID']; ?>" class="glyphicon glyphicon-edit"></a> |
                     <a href="?page=delete_orderdetail.php&id=<?php echo $row['OrderID']; ?>&dishanddrinkID=<?php echo $row['DishanddrinkID']; ?>" onclick="return confirm('Are you sure you want to delete this order detail?');" class="glyphicon glyphicon-remove"></a>
                 </td>

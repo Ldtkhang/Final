@@ -1,7 +1,6 @@
 <?php
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     if ($_POST['tableName'] == "") {
         $error .= "<li>Please enter Table Name</li>";
     }

@@ -1,5 +1,4 @@
 <?php
-
 if (!isset($_SESSION['usid'])) {
     echo '<script>alert("PLEASE LOGIN");</script>';
     echo '<meta http-equiv="refresh" content="0;URL=?page=login.php"/>';
@@ -37,9 +36,9 @@ $result = mysqli_stmt_get_result($stmt);
         $totalPrice = 0;
         while ($row = mysqli_fetch_array($result)) {
             $itemTotal = ($row['DishanddrinkPrice'] * $row['Quantity']);
-            $serviceTotal = $row['ServicesPrice'] ?? 0; // Lấy giá dịch vụ nếu có, nếu không sẽ bằng 0
-            $totalItemPrice = $itemTotal + $serviceTotal; // Tổng giá trị của mục bao gồm dịch vụ
-            $totalPrice += $totalItemPrice; // Cộng dồn tổng giá giỏ hàng
+            $serviceTotal = $row['ServicesPrice'] ?? 0; 
+            $totalItemPrice = $itemTotal + $serviceTotal;
+            $totalPrice += $totalItemPrice; 
         ?>
             <tr>
                 <td><?php echo htmlspecialchars($row['DishanddrinkName']); ?></td>

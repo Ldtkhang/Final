@@ -1,7 +1,6 @@
 <?php
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     if ($_POST['id'] == "") {
         $error .= "<li>Please enter Service ID</li>";
     }
@@ -12,25 +11,20 @@ if (isset($_POST['btnSubmit'])) {
         $error .= "<li>Please enter a valid Service Price</li>";
     }
 
-    // If no errors, proceed to add the service
     if ($error == "") {
         $id = $_POST["id"];
         $name = $_POST["name"];
         $price = $_POST["price"];
 
-        // Include your database connection file
-        include 'db.php'; // Make sure to replace this with the correct path to your db.php
+        include 'db.php';
 
-        // Check for duplicate service
         $sql = "SELECT * FROM services WHERE ServicesID = '$id'";
         $result = mysqli_query($conn, $sql);
 
-        // Check if the query was successful
         if (!$result) {
             $error .= "<li>Error checking for duplicates: " . mysqli_error($conn) . "</li>";
         } else {
             if (mysqli_num_rows($result) == 0) {
-                // Insert the new service into the database
                 $sql = "INSERT INTO services (ServicesID, ServiceName, ServicesPrice) VALUES ('$id', '$name', '$price')";
                 if (mysqli_query($conn, $sql)) {
                     echo '<script>alert("Add service successful")</script>';

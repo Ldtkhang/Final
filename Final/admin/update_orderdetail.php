@@ -5,7 +5,6 @@ if ($conn->connect_error) {
 }
 
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     $dishanddrinkID = trim($_POST['dishanddrinkID']);
     $quantity = trim($_POST['quantity']);
     $price = trim($_POST['price']);
@@ -21,9 +20,8 @@ if (isset($_POST['btnSubmit'])) {
     }
 
     if ($error == "") {
-        // Update order detail information in MySQL using prepared statements
-        $id = $_GET['id']; // Original OrderID from the URL
-        $dishanddrinkID = $_GET['dishanddrinkID']; // Original Dish and Drink ID from the URL
+        $id = $_GET['id']; 
+        $dishanddrinkID = $_GET['dishanddrinkID'];
 
         $stmt = $conn->prepare("SELECT * FROM orderdetail WHERE OrderID = ? AND DishanddrinkID = ?");
         $stmt->bind_param("ss", $id, $dishanddrinkID);
@@ -31,7 +29,6 @@ if (isset($_POST['btnSubmit'])) {
         $result = $stmt->get_result();
 
         if ($result->num_rows === 1) {
-            // Update query, excluding OrderID and ServicesID from update
             $stmt = $conn->prepare("UPDATE orderdetail SET DishanddrinkID = ?, OrderdetailQuantity = ?, OrderdetailPrice = ? WHERE OrderID = ? AND DishanddrinkID = ?");
             $stmt->bind_param("sssss", $dishanddrinkID, $quantity, $price, $id, $dishanddrinkID);
 
@@ -48,7 +45,6 @@ if (isset($_POST['btnSubmit'])) {
         $stmt->close();
     }
 } else {
-    // Pre-fill the form with existing order detail data
     if (isset($_GET["id"]) && isset($_GET["dishanddrinkID"])) {
         $stmt = $conn->prepare("SELECT * FROM orderdetail WHERE OrderID = ? AND DishanddrinkID = ?");
         $stmt->bind_param("ss", $_GET["id"], $_GET["dishanddrinkID"]);

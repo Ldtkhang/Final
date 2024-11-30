@@ -17,7 +17,6 @@ if (isset($_POST['btnSubmit'])) {
         $error .= "<li>Enter fields with mark (*), please</li>";
     }
     if ($error == "") {
-        //////////////////////////// insert to mysql /////////////////////////////
         $username = $_POST['username'];
         $password1 = $_POST['password1'];
         $role = "customer";
@@ -25,18 +24,16 @@ if (isset($_POST['btnSubmit'])) {
         $email = $_POST['email'];
         $address = $_POST['address'];
         $tel = $_POST['tel'];
-        $sex = isset($_POST['gender']) ? $_POST['gender'] : 'Male'; // Default to Male if not set
+        $sex = isset($_POST['gender']) ? $_POST['gender'] : 'Male';
         $date = $_POST['date'];
         $month = $_POST['month'];
         $year = $_POST['year'];
-        $passwordmd5 = md5($password1); // Mã hóa mật khẩu
+        $passwordmd5 = md5($password1);
 
-        // Kiểm tra xem tên người dùng đã tồn tại chưa
         $sql = "SELECT * FROM user WHERE UserName ='" . mysqli_real_escape_string($conn, $username) . "'";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) == 0) {
-            // Chèn dữ liệu vào bảng user
             $sql = "INSERT INTO user (UserName, UserPassword, UserRole, UserFullName, UserEmail, UserAddress, UserPhone, UserGender, UserBirthDate) 
             VALUES ('$username', '$passwordmd5', '$role', '$fullname', '$email', '$address', '$tel', '$sex', '$year-$month-$date')";
             mysqli_query($conn, $sql);

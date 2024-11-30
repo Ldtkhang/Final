@@ -20,29 +20,26 @@ if (isset($_POST['btnSubmit'])) {
         $name = $_POST["name"];
         $price = $_POST["price"];
         $type = $_POST["type"];
-        $filePic = ""; // Initialize the variable to hold the image name
+        $filePic = "";
 
-        // Fetch the current details to retain the old image if no new image is uploaded
         $sql = "SELECT * FROM dishanddrink WHERE DishanddrinkID='$id'";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_array($result);
-            $filePic = $row['DishanddrinkImage']; // Keep the old image by default
+            $filePic = $row['DishanddrinkImage'];
 
-            // Check if a new image is uploaded
             if (!empty($_FILES['fileimage']['name'])) {
                 $pic = $_FILES["fileimage"];
                 if ($pic['type'] == "image/jpg" || $pic['type'] == "image/jpeg" || $pic['type'] == "image/png" || $pic['type'] == "image/gif") {
                     // No size limit, directly copy the file
                     copy($pic['tmp_name'], "pimgs/" . $pic['name']);
-                    $filePic = $pic['name']; // Update to new image name
+                    $filePic = $pic['name'];
                 } else {
                     $error .= "<li>Invalid image format. Allowed formats: jpg, jpeg, png, gif</li>";
                 }
             }
 
-            // Update the record with the new values
             $sql = "UPDATE dishanddrink SET DishanddrinkName = '$name', DishanddrinkPrice = '$price', DishanddrinkImage = '$filePic', DishanddrinkType = '$type' WHERE DishanddrinkID='$id'";
             mysqli_query($conn, $sql);
             echo '<script>alert("Update dish/drink successful")</script>';

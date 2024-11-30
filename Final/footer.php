@@ -7,7 +7,6 @@
 </head>
 <body>
     <div class="content">
-        <!-- Nội dung chính của trang -->
     </div>
     
     <footer class="container-fluid text-center">

@@ -1,7 +1,6 @@
 <?php
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-  // Validate form inputs
   if ($_POST['id'] == "") {
     $error .= "<li>Please enter ID</li>";
   }
@@ -38,32 +37,27 @@ if (isset($_POST['btnSubmit'])) {
     $error .= "<li>Please select Gender</li>";
   }
 
-  // If no errors, proceed to add the user
   if ($error == "") {
     $id = $_POST["id"];
     $username = $_POST["username"];
-    $password = $_POST["password"]; // The original password
+    $password = $_POST["password"];
     $email = $_POST["email"];
     $fullname = $_POST["fullname"];
     $address = $_POST["address"];
     $phone = $_POST["phone"];
     $birthdate = $_POST["birthdate"];
     $role = $_POST["role"];
-    $gender = $_POST["gender"]; // Get gender value
+    $gender = $_POST["gender"];
 
-    // Check for duplicate username or email
     $sql = "SELECT * FROM user WHERE UserName = '$username' OR UserEmail = '$email'";
     $result = mysqli_query($conn, $sql);
 
-    // Check if the query was successful
     if (!$result) {
       $error .= "<li>Error checking for duplicates: " . mysqli_error($conn) . "</li>";
     } else {
       if (mysqli_num_rows($result) == 0) {
-        // Hash the password before inserting
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        // Insert the new user into the database
         $sql = "INSERT INTO user (UserID, UserName, UserPassword, UserEmail, UserGender, UserFullName, UserAddress, UserPhone, UserBirthDate, UserRole) 
                 VALUES ('$id', '$username', '$hashedPassword', '$email', '$gender', '$fullname', '$address', '$phone', '$birthdate', '$role')";
 

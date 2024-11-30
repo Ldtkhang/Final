@@ -6,7 +6,6 @@ if (!isset($_SESSION['usid']) || $_SESSION['usid'] == "") {
     exit;
 }
 
-// Check if ID is valid
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo "<p class='text-center'>Invalid Product ID.</p>";
     exit;
@@ -36,7 +35,7 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
 
     <h4 style="font-size: 20px; margin-bottom: 15px;">Select Services (optional):</h4>
     <select name="services" style="font-size: 18px; margin-bottom: 10px;">
-        <option value="">No service</option> <!-- Option for no service -->
+        <option value="">No service</option>
         <?php
         $serviceSql = "SELECT * FROM services";
         $serviceResult = mysqli_query($conn, $serviceSql);

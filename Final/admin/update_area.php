@@ -1,22 +1,19 @@
 <?php
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     if ($_POST['areaName'] == "") {
         $error .= "<li>Please enter Area Name</li>";
     }
 
     if ($error == "") {
-        // Update area information in MySQL
         $id = $_GET['id'];
         $areaName = $_POST['areaName'];
 
-        // Check if the area exists
         $sql = "SELECT * FROM area WHERE AreaID='" . $id . "'";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) == 1) {
-            // Update query
+         
             $sql = "UPDATE area SET 
                         AreaName = '$areaName' 
                     WHERE AreaID = '$id'";
@@ -31,7 +28,6 @@ if (isset($_POST['btnSubmit'])) {
         }
     }
 } else {
-    // Pre-fill the form with existing area data
     if (isset($_GET["id"])) {
         $areaName = "";
 

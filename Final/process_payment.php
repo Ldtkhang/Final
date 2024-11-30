@@ -5,12 +5,10 @@ if (!isset($_SESSION['usid'])) {
     exit;
 }
 
-// Process the payment if the request method is POST and total_price is set
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['total_price'])) {
     $userID = $_SESSION['usid'];
     $totalPrice = floatval($_POST['total_price']);
 
-    // Step 1: Check if there is any OrderID in "Pending" status for this user
     $pendingOrderSql = "SELECT OrderID FROM orders WHERE UserID = ? AND OrdersStatus = 'Pending' ORDER BY OrderID DESC LIMIT 1";
     $stmt = mysqli_prepare($conn, $pendingOrderSql);
     if ($stmt === false) {
@@ -22,17 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['total_price'])) {
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 
-    // Check if a pending order exists
     if (!$pendingOrderID) {
         echo '<script>alert("Please select your area and table to continue with the payment.");</script>';
         echo '<meta http-equiv="refresh" content="0;URL=?page=home.php"/>';
-        exit; // Stop further processing
+        exit;
     }
 
-    // Use the existing pending order for payment
     $orderID = $pendingOrderID;
 
-    // Step 2: Insert items from the cart into orderdetail for this OrderID
     $cartSql = "SELECT 
                     c.DishanddrinkID, 
                     c.ServicesID, 
@@ -51,13 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['total_price'])) {
     mysqli_stmt_execute($cartStmt);
     $cartResult = mysqli_stmt_get_result($cartStmt);
 
-    // Step 3: Add each item from the cart into orderdetail table
     while ($row = mysqli_fetch_assoc($cartResult)) {
         $dishanddrinkID = $row['DishanddrinkID'];
         $servicesID = $row['ServicesID'];
         $orderdetailQuantity = $row['Quantity'];
-        $orderdetailPrice = $row['DishanddrinkPrice']; // Dish or drink price without service
-        $orderdetailServicePrice = $row['ServicesPrice'] ?? 0; // Only service price
+        $orderdetailPrice = $row['DishanddrinkPrice'];
+        $orderdetailServicePrice = $row['ServicesPrice'] ?? 0;
 
         $insertDetailSql = "INSERT INTO orderdetail (OrderID, DishanddrinkID, ServicesID, OrderdetailQuantity, OrderdetailServicePrice, OrderdetailPrice) 
                             VALUES (?, ?, ?, ?, ?, ?)";
@@ -71,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['total_price'])) {
     }
     mysqli_stmt_close($cartStmt);
 
-    // Step 4: Update the order status to Processing
     $updateOrderStatusSql = "UPDATE orders SET OrdersStatus = 'Processing' WHERE OrderID = ?";
     $updateStmt = mysqli_prepare($conn, $updateOrderStatusSql);
     if ($updateStmt === false) {
@@ -81,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['total_price'])) {
     mysqli_stmt_execute($updateStmt);
     mysqli_stmt_close($updateStmt);
 
-    // Step 5: Delete all items from the cart after successful payment
     $deleteSql = "DELETE FROM cart WHERE UserID = ?";
     $deleteStmt = mysqli_prepare($conn, $deleteSql);
     if ($deleteStmt === false) {
@@ -91,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['total_price'])) {
     mysqli_stmt_execute($deleteStmt);
     mysqli_stmt_close($deleteStmt);
 
-    // Final success message
     echo '<script>alert("Payment successful! Thank you for your purchase.");</script>';
     echo '<meta http-equiv="refresh" content="0;URL=?page=home.php"/>';
 } else {

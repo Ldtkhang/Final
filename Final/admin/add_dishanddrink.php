@@ -1,7 +1,6 @@
 <?php
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     if ($_POST['name'] == "") {
         $error .= "<li>Please enter Name</li>";
     }
@@ -21,13 +20,10 @@ if (isset($_POST['btnSubmit'])) {
         $pic = $_FILES["fileimage"];
         $type = $_POST["type"];
 
-        // Validate image type without size restriction
         if ($pic['type'] == "image/jpg" || $pic['type'] == "image/jpeg" || $pic['type'] == "image/png" || $pic['type'] == "image/gif") {
-            // Move uploaded file without size limit
             copy($pic['tmp_name'], "pimgs/" . $pic['name']);
             $filePic = $pic['name'];
 
-            /////////////////////////////////// insert new dish/drink //////////////////////////////
             $sql = "SELECT * FROM dishanddrink WHERE DishanddrinkName='" . $name . "'";
             $result = mysqli_query($conn, $sql);
 

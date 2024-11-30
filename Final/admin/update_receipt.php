@@ -1,7 +1,6 @@
 <?php
 $error = [];
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     if (empty($_POST['receiptDate'])) {
         $error[] = "Please enter Receipt Date";
     }
@@ -10,24 +9,20 @@ if (isset($_POST['btnSubmit'])) {
     }
 
     if (empty($error)) {
-        // Use prepared statements for better security
         $id = $_GET['id'];
         $receiptDate = $_POST['receiptDate'];
         $receiptQuantity = $_POST['receiptQuantity'];
 
-        // Prepare the SQL statement to check for the receipt
         $stmt = $conn->prepare("SELECT * FROM receipt WHERE ReceiptID = ?");
         $stmt->bind_param("s", $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows === 1) {
-            // Update query excluding OrderID
             $stmt = $conn->prepare("UPDATE receipt SET ReceiptDate = ?, ReceiptQuantity = ? WHERE ReceiptID = ?");
             $stmt->bind_param("sis", $receiptDate, $receiptQuantity, $id);
             $stmt->execute();
 
-            // Redirect with success message
             header("Location: ?page=manage_receipt.php&msg=Update successful");
             exit();
         } else {
@@ -35,7 +30,6 @@ if (isset($_POST['btnSubmit'])) {
         }
     }
 } else {
-    // Pre-fill the form with existing receipt data
     if (isset($_GET["id"])) {
         $receiptDate = "";
         $receiptQuantity = "";
@@ -46,7 +40,7 @@ if (isset($_POST['btnSubmit'])) {
         $results = $stmt->get_result();
 
         if ($row = $results->fetch_assoc()) {
-            $orderID = htmlspecialchars($row["OrderID"]);  // Still fetching OrderID but not displaying
+            $orderID = htmlspecialchars($row["OrderID"]);
             $receiptDate = htmlspecialchars($row["ReceiptDate"]);
             $receiptQuantity = htmlspecialchars($row["ReceiptQuantity"]);
         }

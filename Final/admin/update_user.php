@@ -1,7 +1,6 @@
 <?php
 $error = "";
 if (isset($_POST['btnSubmit'])) {
-    // Validate form inputs
     if ($_POST['fullname'] == "") {
         $error .= "<li>Please enter Name</li>";
     }
@@ -22,7 +21,6 @@ if (isset($_POST['btnSubmit'])) {
     }
 
     if ($error == "") {
-        // Update user information in MySQL
         $id = $_GET['id'];
         $fullname = $_POST['fullname'];
         $email = $_POST['email'];
@@ -30,7 +28,6 @@ if (isset($_POST['btnSubmit'])) {
         $tel = $_POST['tel'];
         $gender = ($_POST['gender'] == 'Male' || $_POST['gender'] == 'male') ? 'Male' : 'Female';
 
-        // Construct the birthdate from the input fields
         $year = $_POST['year'];
         $month = $_POST['month'];
         $date = $_POST['date'];
@@ -40,7 +37,6 @@ if (isset($_POST['btnSubmit'])) {
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) == 1) {
-            // Update query
             $sql = "UPDATE user SET UserFullName = '$fullname', UserEmail = '$email', UserAddress = '$address', UserPhone = '$tel', UserGender = '$gender', UserBirthDate = '$birthdate' WHERE UserID = '$id'";
             mysqli_query($conn, $sql);
             echo '<script>alert("Update user successful")</script>';
@@ -50,7 +46,6 @@ if (isset($_POST['btnSubmit'])) {
         }
     }
 } else {
-    // Pre-fill the form with existing user data
     if (isset($_GET["id"])) {
         $fullname = "";
         $email = "";
@@ -72,7 +67,6 @@ if (isset($_POST['btnSubmit'])) {
             $gender = $row['UserGender'];
             $birthdate = $row["UserBirthDate"];
             
-            // Split the birthdate into year, month, and day
             $year = date('Y', strtotime($birthdate));
             $month = date('m', strtotime($birthdate));
             $date = date('d', strtotime($birthdate));
