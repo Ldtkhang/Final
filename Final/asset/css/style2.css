@@ -1,0 +1,227 @@
+.navbar {
+    margin-bottom: 50px;
+    border-radius: 0;
+}
+.jumbotron {
+    margin-bottom: 0;
+    background-image: url('../images/01.jpg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    color: #000;
+}
+.content {
+    flex: 1;
+}
+footer {
+    background-color: hsl(0, 0%, 3%);
+    color: #f8fbfa;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #0c0c0c;
+    background-color: #FAFAD2;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+.img-product {
+    height: 200px;
+    width: 100%;
+    max-width: 358px;
+}
+.brand-heading {
+    font-size: 45px;
+    color: #010605;
+}
+.brand-text {
+    color: #f1f1f1;
+}
+.text {
+    color: #ea7250;
+}
+.nav-link {
+    background-color: rgb(0, 0, 0);
+    color: #fdfefe;
+    border: none;
+    cursor: pointer;
+    padding: 20px;
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: red;
+}
+.dropdown-menu {
+    display: none;
+    background-color: rgb(247, 241, 241);
+    min-width: 200px;
+    z-index: 1000;
+}
+.dropdown-menu a {
+    color: #fbfdfe;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+}
+a {
+    color: #f8fcf9;
+    text-decoration: none;
+    background-color: #02080d;
+}
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+.nav-item {
+    position: relative;
+    display: inline-block;
+}
+.wrapper {
+    height: 100vh;
+    background-size: cover;
+    width: 100%;
+    background-color: azure;
+}
+.overlay {
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.501);
+}
+.address {
+    margin-top: 14px !important;
+    margin-left: 10px;
+}
+.address span {
+    color: #000000;
+}
+.icons {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgb(87, 53, 53);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.icons i {
+    font-size: 20px;
+}
+.forms {
+    padding: 20px;
+}
+.form-control {
+    padding: .375rem .25rem;
+}
+.panel {
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.panel:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+.panel-footer {
+    padding: 10px 15px;
+    background-color: #FFEB3B;
+    border-top: 1px solid #009688;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+.panel-heading {
+    color: #FFEB3B;
+    background-color:  #0c0c0c;
+    border-color: #000;
+}
+.btn-panel-footer {
+    border-color: #337ab7;
+}
+table {
+    width: 100%;
+    background-color: white;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+th, td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+th {
+    background-color: #f2f2f2;
+}
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.pagination {
+    margin: 20px 0;
+    text-align: center;
+}
+.pagination a {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 25px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+.pagination a:hover {
+    background-color: #0056b3;
+}
+.pagination strong {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #007bff;
+    background-color: #337ab7;
+    color: white;
+    border-radius: 25px;
+}
+.search-container {
+    margin: 20px 0;
+}
+.search-container form {
+    display: inline-block;
+}
+.search-container input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+.search-container button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.search-container button:hover {
+    background-color: #0056b3;
+}

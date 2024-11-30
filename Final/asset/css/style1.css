@@ -1,0 +1,36 @@
+.row.content {
+    height: 750px;
+  }
+  .sidenav {
+    background-color: hsl(0, 25%, 94%);
+    height: 100%;
+  }
+  footer {
+    background-color: rgb(0, 0, 0);
+    color: rgb(231, 231, 231);
+    padding: 15px;
+    text-align: center;
+  }
+  @media screen and (max-width: 767px) {
+    .sidenav {
+      height: auto;
+      padding: 15px;
+      background-color: #aa2525;
+      height: 100%;
+  
+    }
+    .row.content {
+      height: auto;
+    }
+  }
+  body {
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #000;
+    background-size: 1381px;
+  }
+  .sidenav {
+    background-image: url();
+    height: 650px;
+    background-size: 226px;
+  }
